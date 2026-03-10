@@ -1,0 +1,1354 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FORMATION SÉCURITÉ INTERNE – Circus Casino Resort Namur</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 24px; }
+    header { display:flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+    h1 { font-size: 1.4rem; margin: 0; }
+    .progress { font-size: .95rem; opacity: .8; border: 1px solid rgba(127,127,127,.35); padding: 4px 10px; border-radius: 999px; }
+    .card { border: 1px solid rgba(127,127,127,.35); border-radius: 16px; padding: 18px; }
+    .title { font-size: 1.25rem; font-weight: 700; margin: 0 0 10px; }
+    .subtitle { margin: 0 0 14px; opacity: .85; }
+    .content p { margin: 10px 0; }
+    .content ul { margin: 8px 0 8px 18px; }
+    .content li { margin: 6px 0; }
+    .hr { height: 1px; background: rgba(127,127,127,.25); margin: 16px 0; }
+
+.piu-box {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  max-width: 240px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(127,127,127,.35);
+  background: rgba(127,127,127,.08);
+  font-size: .9rem;
+}
+
+.piu-box a {
+  display: inline-block;
+  margin-top: 6px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+    .actions { display:flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    button {
+      border: 0; border-radius: 12px; padding: 10px 14px;
+      font-weight: 700; cursor: pointer;
+      background: #2b6cb0; color: #fff;
+    }
+    button.secondary { background: rgba(127,127,127,.25); color: inherit; }
+    button:disabled { opacity: .55; cursor: not-allowed; }
+
+    .quiz-question { font-weight: 700; margin: 0 0 12px; }
+    .choices { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+    .choice {
+      border: 1px solid rgba(127,127,127,.30);
+      border-radius: 12px;
+      padding: 10px 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color .15s ease, border-color .15s ease, outline-color .15s ease;
+    }
+    .choice:hover { border-color: rgba(127,127,127,.55); }
+    .choice.correct { border-color: rgba(46,204,113,.85); outline: 2px solid rgba(46,204,113,.45); background: rgba(46,204,113,.12); }
+    .choice.wrong { border-color: rgba(231,76,60,.85); outline: 2px solid rgba(231,76,60,.45); background: rgba(231,76,60,.12); }
+
+    .feedback {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(127,127,127,.35);
+      display: none;
+    }
+    .feedback.ok { display:block; border-color: rgba(46,204,113,.65); background: rgba(46,204,113,.10); }
+    .feedback.ko { display:block; border-color: rgba(231,76,60,.65); background: rgba(231,76,60,.10); }
+
+    .hint { margin-top: 10px; opacity: .8; font-size: .95rem; }
+  
+/* Admin (discret mais visible) */
+.admin-link{
+  position:fixed;
+  bottom:14px;
+  right:18px;
+  font-size:.85rem;
+  opacity:.65;
+  cursor:pointer;
+  user-select:none;
+  z-index:9999;
+}
+.admin-link:hover{ opacity:.95; }
+.toc-list{ list-style:none; padding:0; margin:10px 0 0; display:grid; gap:8px; }
+.toc-item{
+  border: 1px solid rgba(127,127,127,.30);
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor:pointer;
+}
+.toc-item:hover{ border-color: rgba(127,127,127,.55); }
+.toc-meta{ font-size:.85rem; opacity:.75; margin-top:4px; }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>FORMATION SÉCURITÉ INTERNE – Circus Casino Resort Namur</h1>
+      <div class="progress" id="progress">Page 1 / 1</div>
+    </header>
+
+    <main class="card" id="stage"></main>
+
+    <div class="actions">
+      <button type="button" class="secondary" id="prevBtn">Retour</button>
+      <button type="button" id="nextBtn">Suite</button>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * Modèle:
+     * - type: "text" | "quiz"
+     * - title, subtitle, blocks (pour text)
+     * - question, choices[{label, correct}] (pour quiz)
+     */
+    const PAGES = [
+{
+  type: "text",
+  title: "Introduction – Pourquoi cette formation",
+  subtitle: "Lisez attentivement puis cliquez sur « Suite ».",
+  blocks: [
+    { p: "La sécurité n’est pas uniquement une question de procédure." },
+    { p: "Elle repose sur des comportements individuels cohérents et réactifs." },
+    { p: "L’objectif de cette formation est simple :" },
+    { ul: [
+        "rappeler les consignes essentielles",
+        "clarifier ce qui est attendu de chacun",
+        "garantir que chaque collaborateur sache comment réagir",
+        "renforcer la prévention au quotidien"
+      ]
+    },
+    { p: "Cette formation couvre :" },
+    { ol: [
+        "Les situations d’urgence majeures",
+        "Les ressources internes disponibles",
+        "Les comportements de prévention",
+        "La sécurité psychosociale"
+      ]
+    },
+    { p: "Important : chaque collaborateur est responsable de sa propre sécurité et contribue à celle des autres." },
+
+
+  ]
+},
+
+
+      {
+        type: "quiz",
+        title: "Quiz 1",
+        question: "Quel est l’objectif principal de cette formation ?",
+        choices: [
+       
+          { label: "Remplacer toutes les procédures existantes", correct: false },
+          { label: "Apprendre à gérer techniquement la centrale d’alarme", correct: false },
+          { label: "Renforcer les bons réflexes, clarifier les attentes et améliorer la prévention", correct: true } ]
+      },
+
+      {
+        type: "text",
+        title: "1. Incendie – Conduite à tenir pour tous les collaborateurs",
+        blocks: [
+          { p: "Notre bâtiment est équipé d’une centrale d’alarme incendie et chaque pièce est équipée de plusieurs détecteurs." },
+          { p: "Ce système d’alarme détecte automatiquement certaines anomalies." },
+          { p: "Toute alarme doit être considérée comme réelle jusqu’à preuve du contraire." },
+          { p: "L’absence de fumée visible ne signifie pas absence de danger." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 2",
+        question: "En cas d’alarme incendie, quelle attitude générale est correcte ?",
+        choices: [
+          { label: "Supposer que c’est un test si on ne voit pas de fumée", correct: false },
+          { label: "Ignorer si l’activité doit continuer", correct: false },
+          { label: "Considérer l’alarme comme réelle jusqu’à preuve du contraire", correct: true }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "1.1 Moyens d’extinction",
+        blocks: [
+          { p: "Des extincteurs sont présents dans le bâtiment. Ils peuvent être utilisés uniquement si :" },
+          { ul: [
+              "le feu est localisé et limité",
+              "aucune fumée importante n’est présente",
+              "votre sécurité est garantie"
+            ]
+          },
+          { p: "Si un doute existe, l’évacuation est prioritaire." },
+          { p: "Un extincteur ne remplace jamais l’alerte ni l’évacuation." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 3",
+        question: "Quand l’utilisation d’un extincteur peut-elle être envisagée ?",
+        choices: [
+          { label: "Quand le feu est localisé et que votre sécurité est garantie", correct: true },
+          { label: "Dès qu’on voit une flamme, même avec fumée importante", correct: false },
+          { label: "Uniquement après avoir fini sa tâche en cours", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "1.2 Compartimentage",
+        blocks: [
+          { p: "Les portes coupe-feu ont une fonction essentielle :" },
+          { ul: [
+              "ralentir la propagation du feu",
+              "limiter la fumée",
+              "protéger les voies d’évacuation"
+            ]
+          },
+          { p: "Elles ne doivent jamais être bloquées ouvertes." },
+          { p: "Un simple obstacle peut compromettre la sécurité de tout un étage." },
+          { p: "En cas d’évacuation, le principe du compartimentage permet de n’évacuer que la zone concernée." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 4",
+        question: "Pourquoi ne faut-il jamais bloquer une porte coupe-feu ouverte ?",
+        choices: [
+          { label: "Parce que cela peut compromettre la limitation du feu et des fumées", correct: true },
+          { label: "Parce que cela gêne uniquement le nettoyage", correct: false },
+          { label: "Parce que cela empêche de circuler plus vite", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "1.3 Déclenchement d’alarme",
+        blocks: [
+          { p: "En cas d’alarme incendie :" },
+          { ul: [
+              "l’alarme est toujours prise au sérieux",
+              "une vérification est effectuée par les personnes désignées",
+              "la centrale d’alarme est gérée par l’équipe habilitée"
+            ]
+          }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 5",
+        question: "Qui gère la centrale d’alarme incendie ?",
+        choices: [
+          { label: "Tout collaborateur présent", correct: false },
+          { label: "L’équipe habilitée", correct: true },
+          { label: "Uniquement les clients qui constatent une alarme", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "1.4 Ce que vous devez faire en cas de déclenchement de l’alarme",
+        blocks: [
+          { p: "La plupart du temps, fort heureusement, il s’agit de fausses alertes, ou d’émissions de fumée rapidement maîtrisées et sans danger." },
+          { p: "Dès que l’alarme retentit toutefois, chaque collaborateur est tenu de :" },
+          { ul: [
+              "rester attentif aux consignes données",
+              "se tenir prêt à évacuer"
+            ]
+          },
+          { p: "Ne jamais :" },
+          { ul: [
+              "ignorer une alarme",
+              "supposer qu’il s’agit d’un test"
+            ]
+          }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 6",
+        question: "En cas d’alarme, que ne faut-il jamais faire ?",
+        choices: [
+          { label: "Rester attentif aux consignes", correct: false },
+          { label: "Supposer qu’il s’agit d’un test", correct: true },
+          { label: "Se tenir prêt à évacuer", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "1.5 Si vous constatez un départ de feu",
+        blocks: [
+          { p: "Si vous observez un départ de feu :" },
+          { ul: [
+              "déclencher l’alerte selon les consignes internes",
+              "prévenir immédiatement un responsable",
+              "ne tenter d’éteindre le feu que si cela est sans danger"
+            ]
+          },
+          { p: "Votre sécurité prime toujours." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 7",
+        question: "Face à un départ de feu, quelle règle prime ?",
+        choices: [
+          { label: "Votre sécurité prime toujours", correct: true },
+          { label: "Éteindre le feu coûte que coûte", correct: false },
+          { label: "Continuer à travailler pour ne pas perturber le service", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "1.6 Si une évacuation est demandée",
+        blocks: [
+          { p: "Si l’ordre d’évacuation est donné :" },
+          { ol: [
+              "Quitter immédiatement votre poste",
+              "Ne pas utiliser l’ascenseur",
+              "Fermer les portes derrière vous (sans les verrouiller)",
+              "Rejoindre le point de rassemblement (parking)",
+              "Attendre les instructions"
+            ]
+          },
+          { p: "Ne jamais retourner chercher des effets personnels." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 8",
+        question: "Lors d’une évacuation, quel comportement est correct ?",
+        choices: [
+          { label: "Retourner chercher ses effets personnels", correct: false },
+          { label: "Ne pas utiliser l’ascenseur", correct: true },
+          { label: "Verrouiller les portes derrière soi", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "1.7 Les sorties de secours",
+        blocks: [
+          { p: "Notre bâtiment comporte plusieurs sorties de secours :" },
+          { p: "Côté Citadelle :" },
+          { ul: ["Escalier hôtel", "Hall de réception", "Ancienne entrée", "Casino Club"] },
+          { p: "Côté Meuse :" },
+          { ul: ["Quai de livraison", "Escalier hôtel", "Casino Club"] }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 9",
+        question: "Quel est le bon réflexe concernant les sorties de secours ?",
+        choices: [
+          { label: "Connaître celles proches de son poste et rester attentif aux consignes", correct: true },
+          { label: "Les utiliser uniquement si on est réceptionniste", correct: false },
+          { label: "Supposer qu’on trouvera toujours une sortie en suivant la foule", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "2. Situation de violence grave",
+        blocks: [
+          { p: "Ce type de situation reste rare, mais les conséquences peuvent être graves." },
+          { p: "Le principe central est : Priorité à la mise en sécurité." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 10",
+        question: "En cas de violence grave, quelle priorité est correcte ?",
+        choices: [
+          { label: "Priorité à la mise en sécurité", correct: true },
+          { label: "Rester pour comprendre ce qu’il se passe", correct: false },
+          { label: "Confronter l’agresseur", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "2.1 Comportements recommandés",
+        blocks: [
+          { p: "Selon le contexte :" },
+          { ul: [
+              "s’éloigner du danger si possible",
+              "se réfugier dans un local fermé",
+              "verrouiller la porte si possible",
+              "rester silencieux",
+              "couper les sonneries des téléphones"
+            ]
+          }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 11",
+        question: "Si vous vous réfugiez dans un local, que devez-vous faire ?",
+        choices: [
+          { label: "Téléphoner en haut-parleur", correct: false },
+          { label: "Garder la porte ouverte pour observer", correct: false },
+          { label: "Rester silencieux et couper les sonneries", correct: true }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "2.2 Alerte",
+        blocks: [
+          { p: "Si cela peut être fait sans danger :" },
+          { ul: [
+              "prévenir les services d’urgence 112>",
+              "transmettre des informations claires et factuelles"
+            ]
+          },
+          { p: "Votre sécurité personnelle reste prioritaire." },
+          { p: "Note : ce n’est jamais une erreur d’appeler le 112." },
+          { p: "Recommandation : vous pouvez installer sur votre téléphone l’application 112." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 12",
+        question: "Concernant l’appel au 112, quelle affirmation est correcte ?",
+        choices: [
+          { label: "Il vaut mieux attendre d’être certain à 100%", correct: false },
+          { label: "Ce n’est jamais une erreur d’appeler le 112", correct: true },
+          { label: "On appelle uniquement si on est manager", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "3. Premiers secours et ressources internes",
+        blocks: [
+          { p: "3.1 En cas d’accident – La priorité est :" },
+          { ol: [
+              "Sécuriser la zone",
+              "Prévenir un secouriste interne",
+              "Rester auprès de la personne"
+            ]
+          },
+          { p: "Ne jamais déplacer une personne blessée sauf danger immédiat." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 13",
+        question: "Après un accident, quelle séquence est correcte ?",
+        choices: [
+          { label: "Sécuriser → prévenir un secouriste → rester auprès de la personne", correct: true },
+          { label: "Déplacer la personne blessée immédiatement", correct: false },
+          { label: "Attendre sans agir", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "3.2 Boîtes de secours",
+        blocks: [
+          { p: "Elles contiennent le matériel de première intervention : compresses, pansements, matériel de protection." },
+          { p: "Elles ne remplacent pas une prise en charge médicale." },
+          { p: "Elles se trouvent en différents endroits du bâtiment :" },
+          { ul: [
+              "Restaurant",
+              "Réception",
+              "Bar salle de jeux",
+              "Bar Casino Club",
+              "Caisse",
+              "Réserve poker",
+              "Espace Wellness",
+              "Bureaux",
+              "Atelier",
+              "Local premiers soins"
+            ]
+          }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 14",
+        question: "À quoi servent principalement les boîtes de secours ?",
+        choices: [
+          { label: "À une première intervention immédiate", correct: true },
+          { label: "À remplacer une prise en charge médicale", correct: false },
+          { label: "À stocker des effets personnels", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "3.3 Secouristes internes",
+        blocks: [
+          { p: "Des collaborateurs formés sont identifiés." },
+          { p: "En cas de doute :" },
+          { ul: [
+              "prévenir immédiatement",
+              "ne pas minimiser la situation"
+            ]
+          }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 15",
+        question: "En cas de doute médical après un incident, que faire ?",
+        choices: [
+          { label: "Ne rien dire pour éviter de déranger", correct: false },
+          { label: "Prévenir immédiatement et ne pas minimiser", correct: true },
+          { label: "Attendre la fin du service quoi qu’il arrive", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "3.4 Local de premiers soins",
+        blocks: [
+          { p: "Un espace dédié permet :" },
+          { ul: [
+              "d’isoler une personne blessée",
+              "d’assurer une prise en charge temporaire"
+            ]
+          }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 16",
+        question: "À quoi sert le local de premiers soins ?",
+        choices: [
+          { label: "À isoler et prendre en charge temporairement une personne blessée", correct: true },
+          { label: "À remplacer une consultation médicale", correct: false },
+          { label: "À entreposer du matériel non lié au secours", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "4. Prévention quotidienne",
+        blocks: [
+          { p: "La majorité des incidents sont liés à des comportements ordinaires." },
+          { p: "La prévention quotidienne est donc essentielle." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 17",
+        question: "Pourquoi la prévention quotidienne est-elle importante ?",
+        choices: [
+          { label: "Parce que la majorité des incidents viennent de comportements ordinaires", correct: true },
+          { label: "Parce qu’il n’y a jamais d’incidents majeurs", correct: false },
+          { label: "Parce que cela remplace les procédures d’urgence", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "4.1 Risques électriques",
+        blocks: [
+          { p: "Les installations électriques sont réservées au personnel habilité (BA4)." },
+          { p: "Il est interdit :" },
+          { ul: [
+              "d’ouvrir un tableau électrique",
+              "d’intervenir sur un compteur",
+              "de modifier une installation"
+            ]
+          },
+          { p: "En cas d’anomalie :" },
+          { ul: [
+              "ne pas intervenir",
+              "signaler immédiatement"
+            ]
+          }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 18",
+        question: "Que faire en cas d’anomalie électrique ?",
+        choices: [
+          { label: "Ouvrir le tableau pour vérifier soi-même", correct: false },
+          { label: "Ne pas intervenir et signaler immédiatement", correct: true },
+          { label: "Réparer rapidement pour éviter une panne", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "4.1.1 Rappel pour les personnes formées BA4",
+        blocks: [
+          { p: "Certaines personnes ont reçu une habilitation BA4 et peuvent intervenir dans certaines situations." },
+          { p: "Même dans ce cas, plusieurs principes de sécurité doivent toujours être respectés :" },
+          { ul: [
+              "ne jamais remonter un disjoncteur plusieurs fois sans comprendre la cause",
+              "identifier l’origine du problème avant toute remise sous tension",
+              "ne jamais supposer qu’un déclenchement est anodin"
+            ]
+          },
+          { p: "Un disjoncteur qui déclenche est un signal de sécurité." },
+          { p: "Forcer la remise en service peut provoquer un incendie ou un accident électrique." },
+          { p: "En cas de doute : isoler l’équipement et prévenir une personne compétente." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 18 bis",
+        question: "Si un disjoncteur déclenche plusieurs fois, que faut-il faire ?",
+        choices: [
+          { label: "Le remonter plusieurs fois pour voir si cela tient", correct: false },
+          { label: "Identifier l’origine du problème avant toute remise sous tension", correct: true },
+          { label: "Le bloquer en position ON", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "4.2 Appareils électriques",
+        blocks: [
+          { p: "En fin d’utilisation :" },
+          { ul: [
+              "éteindre les appareils",
+              "éviter les multiprises surchargées",
+              "débrancher si nécessaire"
+            ]
+          },
+          { p: "Une surcharge ou un appareil défectueux peut provoquer un incendie." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 19",
+        question: "Quel comportement réduit le risque d’incendie lié à l’électricité ?",
+        choices: [
+          { label: "Brancher plusieurs multiprises en cascade", correct: false },
+          { label: "Laisser les appareils allumés en permanence", correct: false },
+          { label: "Éteindre les appareils et éviter les multiprises surchargées", correct: true }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "4.3 Trajet domicile-travail",
+        blocks: [
+          { p: "La sécurité commence avant l’arrivée sur le lieu de travail." },
+          { p: "En trottinette ou autre moyen de mobilité :" },
+          { ul: [
+              "respecter le code de la route",
+              "adapter sa vitesse",
+              "porter les protections nécessaires"
+            ]
+          }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 20",
+        question: "Sur le trajet, quelle attitude est attendue ?",
+        choices: [
+          { label: "Aller vite pour arriver à l’heure", correct: false },
+          { label: "Respecter le code de la route et adapter sa vitesse", correct: true },
+          { label: "Utiliser le téléphone en roulant si c’est urgent", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "4.4 Machines et outils",
+        blocks: [
+          { p: "Les machines et outils font partie du travail quotidien mais peuvent provoquer des accidents graves." },
+          { p: "Le principal danger vient souvent de l’habitude." },
+          { p: "Quand on répète un geste des centaines de fois, on peut relâcher son attention." },
+          { ul: [
+              "toujours rester concentré lors de l’utilisation d’un outil",
+              "ne jamais supprimer ou contourner un dispositif de sécurité",
+              "ne jamais utiliser un outil défectueux",
+              "signaler immédiatement toute anomalie"
+            ]
+          },
+          { p: "La règle reste simple : sécurité d’abord, toujours." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 20 bis",
+        question: "Quel est un risque fréquent lors de l’utilisation d’outils ?",
+        choices: [
+          { label: "L’excès d’attention", correct: false },
+          { label: "La routine et la perte de vigilance", correct: true },
+          { label: "Le fait de lire les consignes", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "4.5 Entretien du matériel",
+        blocks: [
+          { p: "Un outil mal entretenu peut devenir dangereux." },
+          { ul: [
+              "bien entretenir les outils après utilisation",
+              "ranger correctement le matériel",
+              "signaler tout outil endommagé",
+              "ne pas utiliser un équipement défectueux"
+            ]
+          },
+          { p: "Un bon entretien prolonge la durée de vie du matériel et réduit les accidents." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 20 ter",
+        question: "Quel comportement est correct concernant l’entretien des outils ?",
+        choices: [
+          { label: "Continuer à utiliser un outil abîmé s’il fonctionne encore", correct: false },
+          { label: "Entretenir, ranger et signaler tout outil endommagé", correct: true },
+          { label: "Laisser le matériel sale pour gagner du temps", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "4.6 Port de charges",
+        blocks: [
+          { p: "Le port de charges peut provoquer des blessures au dos et aux articulations." },
+          { p: "Quelques règles simples permettent de réduire fortement les risques :" },
+          { ul: [
+              "plier les genoux et garder le dos droit",
+              "garder la charge proche du corps",
+              "éviter les torsions du dos",
+              "demander de l’aide si la charge est trop lourde",
+              "utiliser les aides mécaniques disponibles"
+            ]
+          },
+          { p: "Un mauvais geste répété pendant des années peut provoquer des problèmes durables." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 20 quater",
+        question: "Quelle technique est correcte pour soulever une charge ?",
+        choices: [
+          { label: "Se pencher avec le dos courbé", correct: false },
+          { label: "Plier les genoux et garder la charge proche du corps", correct: true },
+          { label: "Tourner le dos pendant qu’on soulève", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "4.7 Hygiène et propreté",
+        blocks: [
+          { p: "La propreté des locaux contribue directement à la sécurité." },
+          { ul: [
+              "respecter le travail des équipes de nettoyage",
+              "ne pas laisser de déchets ou d’obstacles",
+              "signaler toute situation pouvant provoquer une chute"
+            ]
+          },
+          { p: "La propreté est l’affaire de tous." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 20 quinquies",
+        question: "Quelle attitude est correcte en matière de propreté ?",
+        choices: [
+          { label: "Considérer que la propreté concerne uniquement le nettoyage", correct: false },
+          { label: "Respecter le travail des nettoyeurs et garder les lieux propres", correct: true },
+          { label: "Laisser un obstacle si on est pressé", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "4.8 Hygiène et santé",
+        blocks: [
+          { p: "Certaines habitudes simples contribuent à la santé et à la sécurité au travail :" },
+          { ul: [
+              "se laver régulièrement les mains",
+              "aérer les locaux lorsque c’est possible",
+              "porter un masque si l’on présente des symptômes de maladie"
+            ]
+          },
+          { p: "Une bonne hygiène limite la propagation des infections." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 20 sexies",
+        question: "Quel comportement contribue à limiter la propagation des infections ?",
+        choices: [
+          { label: "Se laver régulièrement les mains", correct: true },
+          { label: "Éviter d’aérer les locaux", correct: false },
+          { label: "Venir malade sans précaution", correct: false }
+        ]
+      },
+
+{
+  type: "text",
+  title: "4.9 Hygiène de vie",
+  blocks: [
+    { p: "La sécurité dépend aussi de la condition physique et mentale." },
+    { p: "Pour durer longtemps dans de bonnes conditions, il est recommandé de :" },
+    { ul: [
+        "pratiquer une activité physique régulière",
+        "respecter un sommeil suffisant",
+        "éviter les excès d’alcool",
+        "ne jamais consommer de substances illicites"
+      ]
+    },
+    { p: "Ces éléments sont essentiels pour rester en bonne santé et travailler en sécurité sur le long terme." },
+    { p: "En cas de fatigue importante, de difficulté personnelle, d’abus ou de dépendance, il est important d’en parler rapidement." },
+    { p: "Vous pouvez en parler à votre manager, à la personne de confiance en toute confidentialité, aux conseillers en prévention (internes ou externes) ou aux ressources humaines." },
+
+    { html: `
+      <div style="margin-top:16px;">
+        <div class="title" style="font-size:1.05rem;">En parler</div>
+        <ul style="margin-top:8px;">
+          <li><strong>Le Conseiller en Prévention Risques Psychosociaux</strong> :
+Service externe Liantis :
+078 / 150 888 
+          </li>
+          <li><strong>Votre manager</strong> : parlez-en directement avec lui ou elle.</li>
+          <li><strong>La personne de confiance</strong> : échange confidentiel en direct.</li>
+          <li><strong>Le conseiller en prévention</strong> :
+            <a href="mailto:christophe.vankerrebroeck@casinoresortnamur.be">
+            christophe.vankerrebroeck@casinoresortnamur.be
+            </a>
+          </li>
+          <li><strong>Les ressources humaines</strong> : selon les procédures internes.</li>
+        </ul>
+      </div>
+    `}
+  ]
+},      {
+        type: "quiz",
+        title: "Quiz 20 septies",
+        question: "Quel message est correct concernant l’hygiène de vie ?",
+        choices: [
+          { label: "Le sommeil et l’état physique n’ont pas d’impact sur la sécurité", correct: false },
+          { label: "Une bonne hygiène de vie aide à travailler en sécurité sur le long terme", correct: true },
+          { label: "Les abus d’alcool sont sans conséquence au travail", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "5. Violence et harcèlement au travail",
+        blocks: [
+          { p: "La sécurité ne concerne pas uniquement les risques physiques." },
+          { p: "Elle inclut également la sécurité psychologique." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 21",
+        question: "La sécurité couvre aussi :",
+        choices: [
+          { label: "Uniquement la prévention incendie", correct: false },
+          { label: "Uniquement les risques techniques", correct: false },
+          { label: "La sécurité psychologique", correct: true }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "5.1 Tolérance zéro",
+        blocks: [
+          { p: "Toute forme de :" },
+          { ul: [
+              "harcèlement",
+              "intimidation",
+              "violence verbale ou physique"
+            ]
+          },
+          { p: "est interdite." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 22",
+        question: "Quelle est la règle en matière de harcèlement/violence ?",
+        choices: [
+          { label: "On ne traite que si on a des preuves formelles", correct: false },
+          { label: "Tolérance zéro", correct: true },
+          { label: "On tolère si c’est exceptionnel", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "5.2 Faits de tiers",
+        blocks: [
+          { p: "Les comportements inappropriés de clients ou visiteurs doivent être signalés." },
+          { p: "Aucune situation ne doit être normalisée ou banalisée." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 23",
+        question: "Que faire face à un comportement inapproprié d’un client/visiteur ?",
+        choices: [
+          { label: "Le signaler", correct: true },
+          { label: "Le banaliser pour éviter un conflit", correct: false },
+          { label: "Attendre de voir si cela se reproduit plusieurs fois", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "5.3 Personne de confiance",
+        blocks: [
+          { p: "La personne de confiance est formée et disponible pour :" },
+          { ul: ["écouter", "conseiller", "orienter"] },
+          { p: "La confidentialité est garantie." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz 24",
+        question: "Quel est le rôle de la personne de confiance ?",
+        choices: [
+          { label: "Sanctionner immédiatement sans écoute", correct: false },
+          { label: "Écouter, conseiller, orienter – avec confidentialité", correct: true },
+          { label: "Remplacer le management opérationnel", correct: false }
+        ]
+      },
+
+      {
+        type: "text",
+        title: "Conclusion – Responsabilité individuelle",
+        blocks: [
+          { p: "La sécurité repose sur trois principes :" },
+          { ol: [
+              "Réagir immédiatement en cas d’alarme",
+              "Ne pas intervenir hors de son champ de compétence",
+              "Signaler toute situation anormale"
+            ]
+          },
+          { p: "La vigilance collective protège chacun." }
+        ]
+      },
+      {
+        type: "quiz",
+        title: "Quiz final",
+        question: "Parmi ces 3 principes, lequel est correct ?",
+        choices: [
+          { label: "Intervenir techniquement dès qu’on constate un problème", correct: false },
+          { label: "Ne pas intervenir hors de son champ de compétence", correct: true },
+          { label: "Attendre systématiquement qu’un collègue décide", correct: false }
+        ]
+      }
+      ,
+      {
+        type: "text",
+        title: "Félicitations !",
+        subtitle: "Vous avez complété efficacement cette formation.",
+        blocks: [
+          { p: "Merci pour votre attention et votre implication." },
+          { p: "La vigilance collective protège chacun." },
+          { html: '<div class="hr"></div>' },
+          { html: `
+            <div class="title" style="font-size:1.05rem;margin-top:6px;">Des questions ?</div>
+            <p style="margin-top:8px;">
+              <a href="mailto:christophe.vankerrebroeck@casinoresortnamur.be">christophe.vankerrebroeck@casinoresortnamur.be</a>
+            </p>
+          `},
+          { html: `
+            <div class="title" style="font-size:1.05rem;margin-top:6px;">Découvrir le Plan Interne d’Urgence</div>
+            <p style="margin-top:8px;">
+              <a href="piu.html">Ouvrir le Plan Interne d’Urgence (PIU)</a>
+            </p>
+  
+          `}
+        ]
+      }
+
+    ];
+
+    let idx = 0;
+    let allowNext = true; // bloqué sur page quiz tant que pas bonne réponse
+    let quizAnswered = false;
+    let finalMailSent = false; // déverrouille la page finale après clic sur mailto
+    let adminMode = false; // accès direct via sommaire après code
+
+
+
+    const stage = document.getElementById("stage");
+    const progress = document.getElementById("progress");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function renderList(items, ordered=false) {
+      const el = document.createElement(ordered ? "ol" : "ul");
+      items.forEach(t => {
+        const li = document.createElement("li");
+        li.textContent = t;
+        el.appendChild(li);
+      });
+      return el;
+    }
+
+    function setProgress() {
+      progress.textContent = `Page ${idx + 1} / ${PAGES.length}`;
+    }
+
+    function setButtons() {
+      prevBtn.disabled = idx === 0;
+      nextBtn.disabled = ((idx === PAGES.length - 1) ? true : (!allowNext && !adminMode));
+      nextBtn.textContent = (idx === PAGES.length - 1) ? "Terminé" : "Suite";
+    }
+
+    function renderText(page) {
+      const root = document.createElement("div");
+      const title = document.createElement("div");
+      title.className = "title";
+      title.textContent = page.title;
+      root.appendChild(title);
+
+      if (page.subtitle) {
+        const sub = document.createElement("div");
+        sub.className = "subtitle";
+        sub.textContent = page.subtitle;
+        root.appendChild(sub);
+      }
+
+      const content = document.createElement("div");
+      content.className = "content";
+
+      (page.blocks || []).forEach(b => {
+        if (b.p) {
+          const p = document.createElement("p");
+          p.textContent = b.p;
+          content.appendChild(p);
+        } else if (b.html) {
+          const div = document.createElement("div");
+          div.innerHTML = b.html; // contenu maîtrisé (dans ce fichier)
+          content.appendChild(div);
+        } else if (b.ul) {
+          content.appendChild(renderList(b.ul, false));
+        } else if (b.ol) {
+          content.appendChild(renderList(b.ol, true));
+        }
+      });
+
+      root.appendChild(content);
+if (idx === 0) {
+  root.style.position = "relative";
+
+  const piuBox = document.createElement("div");
+  piuBox.className = "piu-box";
+  piuBox.innerHTML = `
+    <div style="font-weight:700;">Plan interne d'urgence</div>
+<center>    <a href="piu.html">Consulter le PIU</a></center>
+  `;
+
+  root.appendChild(piuBox);
+}
+
+      return root;
+    }
+
+    function renderQuiz(page) {
+      const root = document.createElement("div");
+      const title = document.createElement("div");
+      title.className = "title";
+      title.textContent = page.title || "Quiz";
+      root.appendChild(title);
+
+      const q = document.createElement("div");
+      q.className = "quiz-question";
+      q.textContent = page.question;
+      root.appendChild(q);
+
+      const ul = document.createElement("ul");
+      ul.className = "choices";
+
+      const feedback = document.createElement("div");
+      feedback.className = "feedback";
+      feedback.id = "feedback";
+
+      // reset state
+      quizAnswered = false;
+      allowNext = adminMode ? true : false;
+
+      page.choices.forEach((c) => {
+        const li = document.createElement("li");
+        const btn = document.createElement("div");
+        btn.className = "choice";
+        btn.textContent = c.label;
+
+        btn.addEventListener("click", () => {
+          if (quizAnswered) return; // une seule tentative par page (comme demandé)
+          quizAnswered = true;
+
+          // marquer le choix cliqué
+          if (c.correct) {
+            btn.classList.add("correct");
+            feedback.textContent = "Bonne réponse.";
+            feedback.classList.remove("ko");
+            feedback.classList.add("ok");
+            allowNext = true;
+            setButtons();
+          } else {
+            btn.classList.add("wrong");
+            feedback.textContent = "Mauvaise réponse.";
+            feedback.classList.remove("ok");
+            feedback.classList.add("ko");
+            allowNext = false;
+            setButtons();
+          }
+        });
+
+        li.appendChild(btn);
+        ul.appendChild(li);
+      });
+
+      root.appendChild(ul);
+      root.appendChild(feedback);
+
+      const hint = document.createElement("div");
+      hint.className = "hint";
+      hint.textContent = "Choisissez une réponse.";
+      root.appendChild(hint);
+
+      return root;
+    }
+
+
+
+    function renderTOC() {
+      stage.innerHTML = "";
+      // bouton admin visible uniquement sur première page
+      const existingAdmin = document.getElementById("globalAdminLink");
+      if (existingAdmin) existingAdmin.remove();
+      if (idx === 0) {
+        const adminLink = document.createElement("div");
+        adminLink.id = "globalAdminLink";
+        adminLink.className = "admin-link";
+        adminLink.textContent = "admin";
+        adminLink.addEventListener("click", enterAdminMode);
+        document.body.appendChild(adminLink);
+      }
+
+
+      const root = document.createElement("div");
+      const title = document.createElement("div");
+      title.className = "title";
+      title.textContent = "Sommaire (mode admin)";
+      root.appendChild(title);
+
+      const sub = document.createElement("div");
+      sub.className = "subtitle";
+      sub.textContent = "Accès direct à toutes les pages.";
+      root.appendChild(sub);
+
+      const ul = document.createElement("ul");
+      ul.className = "toc-list";
+
+      // Accès direct page mailto en mode admin
+      const mailLi = document.createElement("li");
+      mailLi.className = "toc-item";
+      const mailTitle = document.createElement("div");
+      mailTitle.textContent = "Accès page attestation (mailto)";
+      mailLi.appendChild(mailTitle);
+      const mailMeta = document.createElement("div");
+      mailMeta.className = "toc-meta";
+      mailMeta.textContent = "Page technique";
+      mailLi.appendChild(mailMeta);
+      mailLi.addEventListener("click", () => renderMailGate());
+      ul.appendChild(mailLi);
+
+      PAGES.forEach((p, i) => {
+        const li = document.createElement("li");
+        li.className = "toc-item";
+
+        const t = document.createElement("div");
+        const label = (p && p.title) ? p.title : (p.type === "quiz" ? "Quiz" : "Page");
+        t.textContent = `${i + 1}. ${label}`;
+        li.appendChild(t);
+
+        const meta = document.createElement("div");
+        meta.className = "toc-meta";
+        meta.textContent = p.type === "quiz" ? "Quiz" : "Contenu";
+        li.appendChild(meta);
+
+        li.addEventListener("click", () => {
+          idx = i;
+          render();
+        });
+
+        ul.appendChild(li);
+      });
+
+      root.appendChild(ul);
+
+      stage.appendChild(root);
+
+      // navigation
+      allowNext = true;
+      prevBtn.disabled = false;
+      setButtons();
+      setProgress();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function enterAdminMode() {
+      const code = window.prompt("Code admin :");
+      if (code === null) return;
+      if (String(code).trim() === "d") {
+        adminMode = true;
+        finalMailSent = true; // admin bypass mail gate
+        renderTOC();
+      } else {
+        window.alert("Code incorrect.");
+      }
+    }
+
+    function renderMailGate() {
+      stage.innerHTML = "";
+      // bouton admin visible uniquement sur première page
+      const existingAdmin = document.getElementById("globalAdminLink");
+      if (existingAdmin) existingAdmin.remove();
+      if (idx === 0) {
+        const adminLink = document.createElement("div");
+        adminLink.id = "globalAdminLink";
+        adminLink.className = "admin-link";
+        adminLink.textContent = "admin";
+        adminLink.addEventListener("click", enterAdminMode);
+        document.body.appendChild(adminLink);
+      }
+
+
+      const root = document.createElement("div");
+      const title = document.createElement("div");
+      title.className = "title";
+      title.textContent = "Confirmation d’attestation";
+      root.appendChild(title);
+
+      const p = document.createElement("p");
+      p.textContent = "Pour valider votre attestation de suivi, cliquez sur le bouton ci-dessous afin d’ouvrir le mail de confirmation.";
+      root.appendChild(p);
+
+      const mailBtn = document.createElement("button");
+      mailBtn.type = "button";
+      mailBtn.textContent = "Envoyer l’attestation";
+      mailBtn.style.marginTop = "12px";
+
+      mailBtn.addEventListener("click", () => {
+        const subject = encodeURIComponent("attestation de suivi de formation");
+        const body = encodeURIComponent("Ce mail confirme que vous avez bien suivi la formation. Merci !");
+        window.location.href = `mailto:christophe.vankerrebroeck@casinoresortnamur.be?subject=${subject}&body=${body}`;
+
+        // On ne peut pas vérifier l’envoi effectif via mailto:, on valide donc sur clic.
+        finalMailSent = true;
+        allowNext = true;
+        prevBtn.disabled = false;
+        setButtons();
+      });
+
+      root.appendChild(mailBtn);
+      stage.appendChild(root);
+
+      // verrouillage : l'utilisateur doit cliquer sur le bouton mailto pour débloquer "Suite"
+      allowNext = false;
+      prevBtn.disabled = true;
+      setButtons();
+
+      setProgress();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function render() {
+      const page = PAGES[idx];
+      stage.innerHTML = "";
+      // bouton admin visible uniquement sur première page
+      const existingAdmin = document.getElementById("globalAdminLink");
+      if (existingAdmin) existingAdmin.remove();
+      if (idx === 0) {
+        const adminLink = document.createElement("div");
+        adminLink.id = "globalAdminLink";
+        adminLink.className = "admin-link";
+        adminLink.textContent = "ad";
+        adminLink.addEventListener("click", enterAdminMode);
+        document.body.appendChild(adminLink);
+      }
+
+
+      if (page.type === "text") {
+        allowNext = true;
+        stage.appendChild(renderText(page));
+      } else if (page.type === "quiz") {
+        stage.appendChild(renderQuiz(page));
+      } else {
+        stage.textContent = "Erreur : type de page inconnu.";
+        allowNext = true;
+      }
+
+      setProgress();
+      setButtons();
+
+      // bouton "Sommaire" en mode admin
+      let adminTocBtn = document.getElementById("adminTocBtn");
+      if (adminMode) {
+        if (!adminTocBtn) {
+          adminTocBtn = document.createElement("button");
+          adminTocBtn.type = "button";
+          adminTocBtn.id = "adminTocBtn";
+          adminTocBtn.className = "secondary";
+          adminTocBtn.textContent = "Sommaire";
+          adminTocBtn.addEventListener("click", () => renderTOC());
+          // inséré au début des actions
+          const actions = document.querySelector(".actions");
+          actions.insertBefore(adminTocBtn, actions.firstChild);
+        }
+      } else if (adminTocBtn) {
+        adminTocBtn.remove();
+      }
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    prevBtn.addEventListener("click", () => {
+      if (idx > 0) {
+        idx -= 1;
+        render();
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      if (!allowNext) return;
+
+      const currentPage = PAGES[idx];
+
+      // Juste après la dernière question (Quiz final), on impose le clic sur le bouton mailto
+      if (!adminMode && currentPage && currentPage.type === "quiz" && currentPage.title === "Quiz final" && !finalMailSent) {
+        renderMailGate();
+        return;
+      }
+
+      if (idx < PAGES.length - 1) {
+        idx += 1;
+        render();
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>
