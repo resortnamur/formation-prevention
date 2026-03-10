@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PIU — Présentation</title>
+  <style>
+
+        :root {
+            /* --- Palette Design "Gemini" --- */
+            --red: #cc0000;
+            --gold: #b38f4d;
+            --black: #0a0a0a;
+            --gray: #1e1e1e;
+            --text: #e0e0e0;
+
+            /* --- Couleurs sémantiques (adaptées pour le fond noir) --- */
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-warn: #f59e0b;
+            --accent-violet: #8b5cf6;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--black);
+            color: var(--text);
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* --- Layout Global --- */
+        .presentation-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(90deg, var(--black), var(--red));
+            padding: 0 30px;
+            border-bottom: 2px solid var(--gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            flex-shrink: 0;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- Sidebar Annexes --- */
+        .annex-bar {
+            width: 260px;
+            background: var(--gray);
+            border-right: 1px solid var(--gold);
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            overflow-y: auto;
+            flex-shrink: 0;
+            z-index: 10;
+        }
+
+        .annex-bar h3 {
+            font-size: 0.85em;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--gold);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            color: var(--gold);
+            letter-spacing: 1px;
+        }
+
+        .annex-link {
+            padding: 10px;
+            margin-bottom: 6px;
+            background: rgba(255,255,255,0.05);
+            border-left: 3px solid transparent;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.2s;
+            border-radius: 0 4px 4px 0;
+            color: #ccc;
+            text-decoration: none;
+            display: block;
+        }
+
+        .annex-link:hover {
+            border-left-color: var(--gold);
+            background: rgba(179, 143, 77, 0.1);
+            color: var(--gold);
+        }
+
+        /* --- Slides Viewport --- */
+        .slides-viewport {
+            flex: 1;
+            position: relative;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            padding: 20px 40px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 0.4s ease-out;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .slide.active { display: block; }
+
+        /* --- Typographie & Elements --- */
+        /* Adaptation des styles "Reveal" vers "Gemini" */
+        h1 { color: var(--gold); font-size: 2.2em; margin: 0 0 20px 0; }
+        h2 { color: var(--red); font-size: 1.6em; border-bottom: 1px solid var(--gold); padding-bottom: 8px; margin-top: 0; margin-bottom: 20px; }
+        h3 { color: var(--gold); margin-top: 0; margin-bottom: 10px; font-size: 1.15em; }
+        
+        p, li { line-height: 1.45; font-size: 1em; color: #ddd; }
+        ul, ol { padding-left: 20px; margin-top: 5px; }
+        ul.tight, ol.tight { margin-top: 5px; margin-bottom: 5px; }
+        ul.tight li, ol.tight li { margin-bottom: 4px; }
+        
+        strong { color: #fff; font-weight: bold; }
+        small { color: #888; font-size: 0.8em; }
+
+        /* Kicker (petit titre au dessus) */
+        .kicker {
+            text-transform: uppercase;
+            letter-spacing: .16em;
+            font-weight: 700;
+            font-size: 12px;
+            color: var(--gold);
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        /* Grilles (Mapping des classes source grid2/grid2eq/grid3) */
+        .grid2, .grid2eq { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; margin-bottom: 15px; }
+        .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; align-items: start; margin-bottom: 15px; }
+        
+        /* Cards / Boxes */
+        .card { 
+            background: rgba(255,255,255,0.05); 
+            padding: 16px 18px; 
+            border-radius: 8px; 
+            border: 1px solid #333; 
+            box-sizing: border-box;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Boites colorées (mapping note, warnbox, dangerbox, okbox) */
+        .note { border-left: 4px solid var(--accent-blue); background: rgba(59, 130, 246, 0.1); padding: 12px 14px; border-radius: 6px; margin-bottom: 10px; }
+        .warnbox { border-left: 4px solid var(--accent-warn); background: rgba(245, 158, 11, 0.1); padding: 12px 14px; border-radius: 6px; margin-bottom: 10px; }
+        .dangerbox { border-left: 4px solid var(--red); background: rgba(204, 0, 0, 0.1); padding: 12px 14px; border-radius: 6px; margin-bottom: 10px; }
+        .okbox { border-left: 4px solid var(--accent-green); background: rgba(16, 185, 129, 0.1); padding: 12px 14px; border-radius: 6px; margin-bottom: 10px; }
+
+        /* Images Placeholder (imgph) */
+        .imgph {
+            width: 100%;
+            aspect-ratio: 16/10;
+            border-radius: 8px;
+            border: 1px dashed #444;
+            background: rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            margin: 15px auto;
+            max-width: 900px;
+        }
+        .imgph img { width: 100%; height: 100%; object-fit: contain; }
+
+        /* Pills (Slide 2) */
+        .pill {
+            display: inline-flex; align-items: center;
+            padding: 6px 14px; border-radius: 50px; 
+            font-weight: 600; font-size: 0.9em;
+            background: rgba(255,255,255,0.08); 
+            border: 1px solid #555;
+            margin-right: 10px; margin-bottom: 10px;
+            color: #eee;
+        }
+        .dot { height: 8px; width: 8px; border-radius: 50%; margin-right: 8px; background: #999; }
+        .dot.green { background: var(--accent-green); }
+        .dot.warn { background: var(--accent-warn); }
+        .dot.violet { background: var(--accent-violet); }
+
+        /* --- Navigation --- */
+        .nav-bar {
+            background: var(--gray);
+            padding: 0 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            border-top: 1px solid var(--gold);
+            height: 60px;
+            flex-shrink: 0;
+        }
+        button.nav-btn {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 8px 30px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+        button.nav-btn:hover { background: var(--gold); color: black; }
+
+        /* --- Viewer Overlay --- */
+        .viewer-overlay {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            flex-direction: column;
+        }
+        .viewer-header { background: var(--gray); padding: 10px; display: flex; justify-content: flex-end; border-bottom: 1px solid var(--gold); }
+        .close-viewer { background: var(--red); color: white; border: none; padding: 8px 20px; cursor: pointer; font-weight: bold; }
+        #annex-iframe { width: 100%; height: 100%; border: none; background: white; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+
+/* Liens dans les slides (annexes et autres) */
+.slides-viewport a{
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(179,143,77,0.55);
+}
+.slides-viewport a:hover{ border-bottom-style: solid; }
+
+/* Harmonise les pills de la cover Reveal */
+.pill{ font-size: 0.9em; }
+
+/* Garde la structure des sections annex en mettant un peu d'air */
+.annex .card{ margin-bottom: 12px; }
+
+  </style>
+</head>
+<body>
+
+<div class="presentation-container">
+  <!-- Header -->
+  <div class="header">
+    <div><strong>PIU</strong> — Présentation</div>
+    <div style="color: var(--gold); font-size: 0.9em;">Circus Casino Resort Namur</div>
+  </div>
+
+  <div class="main-content">
+    <!-- Sidebar Annexes -->
+    <div class="annex-bar">
+      <h3>Annexes PIU</h3>
+      <div class="annex-link" onclick="openAnnex('./PLAN%20INTERNE%20D%27URGENCE.pdf')">Découvrez le PIU complet</div><br>
+      <div class="annex-link" onclick="openAnnex('./Annexe%20I%20-%20Centrale%20d%27Urgence.pdf')">Centrale d'Alarme</div>
+      <div class="annex-link" onclick="openAnnex('./Annexe%20II%20-%20Check-list%20%C3%A9vacuation.pdf')">Check-list</div>
+      <div class="annex-link" onclick="openAnnex('./Annexe%20III%20-%20Fiches%20situations%20d%27urgence.pdf')">Fiches situations</div>
+      <div class="annex-link" onclick="openAnnex('./Annexe%20IV%20-%20Contacts.pdf')">Contacts</div>
+      <div class="annex-link" onclick="openAnnex('./Annexe%20V%20-%20Personnes%20n%C3%A9cessitant%20une%20assistance%20particuli%C3%A8re.pdf')">PMR</div>
+      <div class="annex-link" onclick="openAnnex('./Annexe%20VI%20-%20Plans%20CCRN.pdf')">Plans CCRN</div>
+      <div class="annex-link" onclick="openAnnex('./Annexe%20VII%20-%20Salle%20de%20jeux.pdf')">Salle de jeux</div>
+    </div>
+
+    <!-- Slides Viewport -->
+    <div class="slides-viewport">
+
+      <div class="slide active">
+
+<div class="imgph" style="aspect-ratio:16/10;
+              width:90%;
+              max-width:1500px;
+              margin:0 auto;
+              display:flex;
+              justify-content:center;
+              align-items:center;">
+<img src="./images/2.png" style="width:100%; height:100%; object-fit:contain;"/>
+</div>
+
+</div>
+
+<div class="slide">
+
+<div style="margin-top:10px;">
+<span class="pill"><span class="dot"></span>Conscientiser les risques</span>
+<span class="pill"><span class="dot green"></span>Rassurer sur les mesures</span>
+<span class="pill"><span class="dot warn"></span>Clarifier les rôles</span>
+<span class="pill"><span class="dot violet"></span>Valoriser le travail réalisé</span>
+<br/><br/><div class="imgph" style="aspect-ratio:16/10;
+            grid-column:1 / -1;
+            max-width:800px;
+            margin:0 auto;
+            display:flex;
+            justify-content:center;
+            align-items:center;">
+<img src="./images/1.png" style="width:100%; height:100%; object-fit:contain;"/>
+</div>
+</div>
+
+</div>
+
+<div class="slide">
+
+<div class="kicker">Accès rapide</div>
+<h2>Le PIU et ses annexes</h2>
+<div class="grid2eq">
+<div class="card">
+<h3>Document principal</h3>
+<ul class="tight">
+<li><a href="./PLAN%20INTERNE%20D'URGENCE.pdf" rel="noopener" target="_blank">PLAN INTERNE D’URGENCE (PDF)</a></li>
+</ul>
+<h3 style="margin-top:12px;">Annexes opérationnelles (PDF)</h3>
+<ul class="tight">
+<li><a href="./Annexe%20I%20-%20Centrale%20d'Urgence.pdf" rel="noopener" target="_blank">Annexe I — Centrale d’Urgence</a></li>
+<li><a href="./Annexe%20II%20-%20Check-list%20%C3%A9vacuation.pdf" rel="noopener" target="_blank">Annexe II — Check-list évacuation</a></li>
+<li><a href="./Annexe%20III%20-%20Fiches%20situations%20d'urgence.pdf" rel="noopener" target="_blank">Annexe III — Fiches situations d’urgence</a></li>
+<li><a href="./Annexe%20IV%20-%20Contacts.pdf" rel="noopener" target="_blank">Annexe IV — Contacts</a></li>
+<li><a href="./Annexe%20VI%20-%20Personnes%20n%C3%A9cessitant%20une%20assistance%20particuli%C3%A8re.pdf" rel="noopener" target="_blank">Annexe VI — Assistance particulière</a></li>
+<li><a href="./Annexe%20VI%20-%20Plans%20CCRN.pdf" rel="noopener" target="_blank">Annexe VI — Plans CCRN</a></li>
+<li><a href="./Annexe%20VII%20-%20Salle%20de%20jeux.pdf" rel="noopener" target="_blank">Annexe VII — Salle de jeux</a></li>
+</ul>
+</div></div>
+</div>
+
+<div class="slide">
+
+<div class="kicker">Structure</div>
+<div class="grid2">
+<div class="card">
+<ul class="tight">
+<li><strong>Alarme incendie</strong> : alarme → vérification → analyse → décision → coordination</li>
+<li><strong>Évacuation &amp; compartimentage</strong> : zones, portes coupe-feu, rassemblement</li>
+<li><strong>Assistance particulière / PMR</strong></li>
+<li><strong>Salle de jeux</strong> : scénarios + priorités</li>
+<li><strong>Annexes</strong> : centrale, check-list, fiches, contacts, plans</li>
+</ul>
+</div>
+<div class="imgph" style="aspect-ratio:16/10;
+            grid-column:1 / -1;
+            max-width:800px;
+            margin:0 auto;
+            display:flex;
+            justify-content:center;
+            align-items:center;">
+<img src="./images/3.png" style="width:100%; height:100%; object-fit:contain;"/>
+</div>
+</div>
+</div>
+
+<div class="slide">
+
+<div class="kicker">Principes</div>
+<h2>Le PIU évite 3 dérives</h2>
+<div class="grid3">
+<div class="card">
+<span class="pill"><span class="dot danger"></span>Minimisation</span>
+<p style="margin:.3em 0 0 0;">Reset / silence / “on verra”.</p>
+</div>
+<div class="card">
+<span class="pill"><span class="dot warn"></span>Sur-réaction</span>
+<p style="margin:.3em 0 0 0;">Évacuation totale sans logique zone.</p>
+</div>
+<div class="card">
+<span class="pill"><span class="dot"></span>Dilution</span>
+<p style="margin:.3em 0 0 0;">Tout le monde fait tout → personne ne pilote.</p>
+</div>
+</div>
+<div class="imgph" style="aspect-ratio:16/10;
+            grid-column:1 / -1;
+            max-width:800px;
+            margin:0 auto;
+            display:flex;
+            justify-content:center;
+            align-items:center;">
+<img src="./images/4.png" style="width:100%; height:100%; object-fit:contain;"/>
+</div>
+
+</div>
+
+<div class="slide">
+
+<div class="kicker">Déclenchement d’alarme : séquence</div>
+<div class="grid2">
+<div class="card">
+<h3>Étapes (ordre)</h3>
+<ol class="tight">
+<li><strong>Identifier la zone</strong> (répétiteur / centrale).</li>
+<li><strong>Envoyer un vérificateur</strong>.</li>
+<li><strong>Sans retour en 3 min</strong> : réceptionniste vérifie.</li>
+<li><strong>Ensuite</strong> : analyse (fausse / maîtrisé / non maîtrisé).</li>
+</ol>
+</div>
+<div class="card">
+<h3>Centrale / répétiteur : rappel</h3>
+<ul class="tight">
+<li>Lire la zone : info d’entrée.</li>
+<li>Bouton manuel : réarmer → reset centrale.</li>
+<li>Alarme qui revient : suspect détecteur → support.</li>
+</ul>
+</div>
+<div class="imgph" style="aspect-ratio:16/10;
+            grid-column:1 / -1;
+            max-width:800px;
+            margin:0 auto;
+            display:flex;
+            justify-content:center;
+            align-items:center;">
+<img src="./images/5.png" style="width:100%; height:100%; object-fit:contain;"/>
+</div>
+</div>
+</div>
+
+<div class="slide">
+
+<div class="kicker">Alerte incendie : 3 cas</div>
+<div class="grid3">
+<div class="card">
+<span class="pill"><span class="dot"></span>Cas 1 — Fausse alerte</span>
+<ul class="tight">
+<li>Confirmation vérificateur.</li>
+<li>Reset après confirmation.</li>
+<li>Tracer si récurrent.</li>
+</ul>
+</div>
+<div class="card">
+<span class="pill"><span class="dot warn"></span>Cas 2 — Maîtrisé / fumées</span>
+<ul class="tight">
+<li>Maîtrise si possible, sans exposition.</li>
+<li>Reset après dissipation.</li>
+<li><strong>112 quand même</strong>.</li>
+</ul>
+</div>
+<div class="card">
+<span class="pill"><span class="dot danger"></span>Cas 3 — Non maîtrisé</span>
+<ul class="tight">
+<li>Procédure d’urgence complète.</li>
+<li>Évacuation compartimentée.</li>
+<li>Accueil secours + plans.</li>
+</ul>
+</div>
+<div class="imgph" style="aspect-ratio:16/10;
+            grid-column:1 / -1;
+            max-width:800px;
+            margin:0 auto;
+            display:flex;
+            justify-content:center;
+            align-items:center;">
+<img src="./images/6.png" style="width:100%; height:100%; object-fit:contain;"/>
+</div>
+</div>
+</div>
+
+<div class="slide">
+
+<div class="kicker">Rôles : coordinateur / vérificateur / assistants</div>
+<div class="grid2eq">
+<div class="card">
+<h3>Coordinateur</h3>
+<ul class="tight">
+<li>Décide + attribue les rôles.</li>
+<li>Reste point d’ancrage (souvent entrée).</li>
+<li>Prépare arrivée secours (accès + plans + info fiable).</li>
+<li>Check-list (Annexe II) comme garde-fou.</li>
+</ul>
+</div>
+<div class="card">
+<h3>Vérificateur + assistants</h3>
+<ul class="tight">
+<li>Vérificateur : confirme / décrit (fumée ? feu ? source ?).</li>
+<li>Assistants : évacuation zone, portes coupe-feu, info calme, rassemblement.</li>
+<li>Accueil secours (si distinct) : guider + fournir plans.</li>
+</ul>
+</div>
+<div class="imgph" style="aspect-ratio:16/10;
+            grid-column:1 / -1;
+            max-width:800px;
+            margin:0 auto;
+            display:flex;
+            justify-content:center;
+            align-items:center;">
+<img src="./images/7.png" style="width:100%; height:100%; object-fit:contain;"/>
+</div>
+</div>
+</div>
+
+<div class="slide">
+
+<div class="kicker">Compartimentage : évacuer la zone concernée</div>
+<div class="grid2">
+<div class="card">
+<h3>Principes</h3>
+<ul class="tight">
+<li>Évacuation prioritaire : <strong>zone concernée</strong>.</li>
+<li>Portes coupe-feu : vérifier / fermer.</li>
+<li>Consignes : calme, ne rien emporter, fermer sans verrouiller, éclairage allumé.</li>
+<li>Feu dans couloir : <strong>ne pas passer</strong> ; parfois maintien en chambre (protection).</li>
+</ul>
+</div>
+<div class="imgph" style="aspect-ratio:16/10;
+            grid-column:1 / -1;
+            max-width:800px;
+            margin:0 auto;
+            display:flex;
+            justify-content:center;
+            align-items:center;">
+<img src="./images/8.png" style="width:100%; height:100%; object-fit:contain;"/>
+</div>
+</div>
+</div>
+
+<div class="slide">
+
+<div class="grid2eq">
+<div class="card">
+<h3>Rassemblement</h3>
+<ul class="tight">
+<li>Point : <strong>Parking</strong> si beaucoup de monde.</li>
+<li>Rôle : recenser / calmer / relayer consignes.</li>
+</ul>
+<h3 style="margin-top:12px;">Accès secours</h3>
+<ul class="tight">
+<li>Entrée principale · Casino club · Garage · Quai livraison</li>
+<li>Entrée croupiers · Entrée bureaux</li>
+</ul>
+</div>
+</div>
+<div class="imgph" style="aspect-ratio:16/10;
+            grid-column:1 / -1;
+            max-width:800px;
+            margin:0 auto;
+            display:flex;
+            justify-content:center;
+            align-items:center;">
+<img src="./images/9.png" style="width:100%; height:100%; object-fit:contain;"/>
+</div>
+
+</div>
+
+<div class="slide">
+
+<h2>Assistance particulière / PMR</h2>
+<div class="grid2">
+<div class="card">
+<h3>Logique</h3>
+<ul class="tight">
+<li>Identifier : qui / où / type d’aide.</li>
+<li>RDC : accompagnement vers endroit sûr.</li>
+<li>Étages : rassemblement PMR = <strong>terrasse hôtel (1er étage)</strong>.</li>
+<li>Liste tenue à jour (pas de découverte “en live”).</li>
+</ul>
+</div>
+</div>
+<div class="imgph" style="aspect-ratio:16/10;
+            grid-column:1 / -1;
+            max-width:800px;
+            margin:0 auto;
+            display:flex;
+            justify-content:center;
+            align-items:center;">
+<img src="./images/10.png" style="width:100%; height:100%; object-fit:contain;"/>
+</div>
+
+</div>
+
+<div class="slide">
+
+<h2>Mise à l’abri : 4 gestes</h2>
+<div class="grid2eq">
+<div class="card">
+<h3>4 gestes</h3>
+<ol class="tight">
+<li>Rester à l’intérieur.</li>
+<li>Fermer portes + fenêtres.</li>
+<li>Pièce centrale (RDC), loin des fenêtres.</li>
+<li>S’informer (radio/TV), éviter de saturer les lignes.</li>
+</ol>
+</div>
+</div>
+<div class="imgph" style="aspect-ratio:16/10;
+            grid-column:1 / -1;
+            max-width:800px;
+            margin:0 auto;
+            display:flex;
+            justify-content:center;
+            align-items:center;">
+<img src="./images/11.png" style="width:100%; height:100%; object-fit:contain;"/>
+</div>
+
+</div>
+
+<div class="slide">
+
+<h2>Salle de jeux : scénarios</h2>
+<div class="grid2">
+<div class="card">
+<h3>Rappel</h3>
+<ul class="tight">
+<li>Caves / nouvelle aile : pas d’évacuation salle (sauf fumées en salle).</li>
+<li>Bureaux/coffres/repos : évacuer ces zones (pas la salle).</li>
+<li>Fumées en salle : extinction si possible ; sinon sortie calme.</li>
+<li>Jetons/caisses : priorité personnes.</li>
+</ul>
+</div>
+</div>
+<div class="imgph" style="aspect-ratio:16/10;
+            grid-column:1 / -1;
+            max-width:800px;
+            margin:0 auto;
+            display:flex;
+            justify-content:center;
+            align-items:center;">
+<img src="./images/12.png" style="width:100%; height:100%; object-fit:contain;"/>
+</div>
+
+</div>
+
+<div class="slide">
+
+<div class="kicker">Annexes</div>
+<div class="grid2eq">
+<div class="card">
+<h3>Quand l’alarme sonne</h3>
+<ul class="tight">
+<li>Centrale → <a href="./Annexe%20I%20-%20Centrale%20d'Urgence.pdf" rel="noopener" target="_blank">Annexe I</a></li>
+<li>Coordination/évacuation → <a href="./Annexe%20II%20-%20Check-list%20%C3%A9vacuation.pdf" rel="noopener" target="_blank">Annexe II</a></li>
+<li>Cas spécifiques → <a href="./Annexe%20III%20-%20Fiches%20situations%20d'urgence.pdf" rel="noopener" target="_blank">Annexe III</a></li>
+</ul>
+</div>
+<div class="card">
+<h3>Mobiliser / informer</h3>
+<ul class="tight">
+<li>Contacts → <a href="./Annexe%20IV%20-%20Contacts.pdf" rel="noopener" target="_blank">Annexe IV</a></li>
+<li>Plans → <a href="./Annexe%20VI%20-%20Plans%20CCRN.pdf" rel="noopener" target="_blank">Annexe VI</a></li>
+<li>Assistance → <a href="./Annexe%20VI%20-%20Personnes%20n%C3%A9cessitant%20une%20assistance%20particuli%C3%A8re.pdf" rel="noopener" target="_blank">Annexe VI (Assistance)</a></li>
+</ul>
+</div>
+</div>
+<div class="imgph" style="aspect-ratio:16/10;
+            grid-column:1 / -1;
+            max-width:800px;
+            margin:0 auto;
+            display:flex;
+            justify-content:center;
+            align-items:center;">
+<img src="./images/13.png" style="width:100%; height:100%; object-fit:contain;"/>
+</div>
+
+</div>
+
+<div class="slide">
+
+<div class="kicker">Clôture</div>
+<div class="grid2eq">
+<div class="card">
+<h3>Attendus</h3>
+<ul class="tight">
+<li>Règle : pas de reset sans <strong>vérification</strong>.</li>
+<li>Désigner vite les <strong>rôles</strong>.</li>
+<li>Consignes cohérentes, ton calme.</li>
+</ul>
+</div>
+<div class="card">
+<h3>Reconnaissance</h3>
+<p style="margin:.2em 0 0 0; color: var(--muted);">
+            PIU = travail invisible (procédures, plans, contacts, scénarios) jusqu’au jour où ça fait gagner
+            des minutes critiques.
+          </p>
+</div>
+</div>
+<div class="imgph" style="aspect-ratio:16/10;
+            grid-column:1 / -1;
+            max-width:800px;
+            margin:0 auto;
+            display:flex;
+            justify-content:center;
+            align-items:center;">
+<img src="./images/14.png" style="width:100%; height:100%; object-fit:contain;"/>
+</div>
+
+</div>
+
+      <!-- Viewer Overlay -->
+      <div class="viewer-overlay" id="viewer">
+        <div class="viewer-header">
+          <button class="close-viewer" onclick="closeViewer()">FERMER LE DOCUMENT [X]</button>
+        </div>
+        <iframe id="annex-iframe"></iframe>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Navigation Footer -->
+  <div class="nav-bar">
+    <button class="nav-btn" onclick="changeSlide(-1)">Précédent</button>
+    <span id="slide-number" style="color: var(--gold); font-family: monospace; font-size: 1.2em;">1 / 15</span>
+    <button class="nav-btn" onclick="changeSlide(1)">Suivant</button>
+  </div>
+</div>
+
+<script>
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide');
+  const slideNumber = document.getElementById('slide-number');
+  const viewer = document.getElementById('viewer');
+  const iframe = document.getElementById('annex-iframe');
+
+  function updateSlideNumber() {
+    slideNumber.innerText = `${currentSlide + 1} / ${slides.length}`;
+  }
+
+  function changeSlide(direction) {
+    slides[currentSlide].classList.remove('active');
+    currentSlide += direction;
+
+    // Navigation circulaire
+    if (currentSlide < 0) currentSlide = slides.length - 1;
+    if (currentSlide >= slides.length) currentSlide = 0;
+
+    slides[currentSlide].classList.add('active');
+    updateSlideNumber();
+
+    // Remonte en haut si scroll
+    const vp = document.querySelector('.slides-viewport');
+    if (vp) vp.scrollTop = 0;
+    const s = slides[currentSlide];
+    if (s) s.scrollTop = 0;
+  }
+
+  function openAnnex(filename) {
+    iframe.src = filename;
+    viewer.style.display = 'flex';
+  }
+
+  function closeViewer() {
+    viewer.style.display = 'none';
+    iframe.src = '';
+  }
+
+  // Fullscreen hotkeys: ArrowUp = enter, ArrowDown = exit
+  async function enterFullscreen(){
+    const el = document.documentElement;
+    if (document.fullscreenElement) return;
+    if (el.requestFullscreen) return el.requestFullscreen();
+  }
+  async function exitFullscreen(){
+    if (!document.fullscreenElement) return;
+    if (document.exitFullscreen) return document.exitFullscreen();
+  }
+
+  // Navigation clavier
+  document.addEventListener('keydown', (e) => {
+    const t = e.target;
+    const inInput = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+    if (inInput) return;
+
+    if (viewer.style.display === 'flex') {
+      if (e.key === 'Escape') closeViewer();
+      return;
+    }
+
+    if (e.key === 'ArrowRight') changeSlide(1);
+    if (e.key === 'ArrowLeft') changeSlide(-1);
+
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      enterFullscreen();
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      exitFullscreen();
+    }
+  });
+
+  // Initialisation
+  updateSlideNumber();
+</script>
+
+</body>
+</html>
