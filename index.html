@@ -987,6 +987,7 @@ Service externe Liantis :
     let finalMailSent = false; // déverrouille la page finale après clic sur mailto
     let adminMode = false; // accès direct via sommaire après code
 
+const SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwiKI1C45g1h1eO-YUlINII3hedWmNsTfMHc5Hm3RqTlVVbJjNLO-n9d12HW6BgIe7A9Q/exec";
 
 
     const stage = document.getElementById("stage");
@@ -1054,6 +1055,8 @@ if (idx === 0) {
   const piuBox = document.createElement("div");
   piuBox.className = "piu-box";
   piuBox.innerHTML = `
+    <div style="font-weight:700;">Plan interne d'urgence</div>
+<center>    <a href="piu.html">Consulter le PIU</a></center>
   `;
 
   root.appendChild(piuBox);
@@ -1129,6 +1132,43 @@ if (idx === 0) {
     }
 
 
+async function sendConfirmationToSheet(nom) {
+  const cleanNom = String(nom || "").trim();
+
+  if (!cleanNom) {
+    throw new Error("Nom manquant");
+  }
+
+  const response = await fetch(SHEET_WEBAPP_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify({
+      nom: cleanNom,
+      source: "formation-securite"
+    })
+  });
+
+  let data = null;
+
+  try {
+    data = await response.json();
+  } catch (e) {
+    throw new Error("Réponse invalide du serveur");
+  }
+
+  if (!response.ok) {
+    throw new Error(`Erreur HTTP ${response.status}`);
+  }
+
+  if (!data || data.ok !== true) {
+    throw new Error(data && data.error ? data.error : "Envoi refusé");
+  }
+
+  return data;
+}
+
 
     function renderTOC() {
       stage.innerHTML = "";
@@ -1163,7 +1203,7 @@ if (idx === 0) {
       const mailLi = document.createElement("li");
       mailLi.className = "toc-item";
       const mailTitle = document.createElement("div");
-      mailTitle.textContent = "Accès page attestation (mailto)";
+      mailTitle.textContent = "Accès page confirmation (Google Sheet)";
       mailLi.appendChild(mailTitle);
       const mailMeta = document.createElement("div");
       mailMeta.className = "toc-meta";
@@ -1219,58 +1259,74 @@ if (idx === 0) {
     }
 
     function renderMailGate() {
-      stage.innerHTML = "";
-      // bouton admin visible uniquement sur première page
-      const existingAdmin = document.getElementById("globalAdminLink");
-      if (existingAdmin) existingAdmin.remove();
-      if (idx === 0) {
-        const adminLink = document.createElement("div");
-        adminLink.id = "globalAdminLink";
-        adminLink.className = "admin-link";
-        adminLink.textContent = "admin";
-        adminLink.addEventListener("click", enterAdminMode);
-        document.body.appendChild(adminLink);
-      }
+  stage.innerHTML = "";
 
+  const root = document.createElement("div");
 
-      const root = document.createElement("div");
-      const title = document.createElement("div");
-      title.className = "title";
-      title.textContent = "Confirmation d’attestation";
-      root.appendChild(title);
+  const title = document.createElement("div");
+  title.className = "title";
+  title.textContent = "Confirmation de la formation";
+  root.appendChild(title);
 
-      const p = document.createElement("p");
-      p.textContent = "Pour valider votre attestation de suivi, cliquez sur le bouton ci-dessous afin d’ouvrir le mail de confirmation.";
-      root.appendChild(p);
+  const p = document.createElement("p");
+  p.textContent =
+    "Veuillez indiquer votre nom pour confirmer que vous avez complété la formation.";
+  root.appendChild(p);
 
-      const mailBtn = document.createElement("button");
-      mailBtn.type = "button";
-      mailBtn.textContent = "Envoyer l’attestation";
-      mailBtn.style.marginTop = "12px";
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "Votre nom";
+  input.style.padding = "10px";
+  input.style.fontSize = "16px";
+  input.style.marginRight = "10px";
+  root.appendChild(input);
 
-      mailBtn.addEventListener("click", () => {
-        const subject = encodeURIComponent("attestation de suivi de formation");
-        const body = encodeURIComponent("Ce mail confirme que vous avez bien suivi la formation. Merci !");
-        window.location.href = `mailto:christophe.vankerrebroeck@casinoresortnamur.be?subject=${subject}&body=${body}`;
+  const button = document.createElement("button");
+  button.textContent = "Valider la formation";
+  button.style.padding = "10px 16px";
+  button.style.fontSize = "16px";
+  root.appendChild(button);
 
-        // On ne peut pas vérifier l’envoi effectif via mailto:, on valide donc sur clic.
-        finalMailSent = true;
-        allowNext = true;
-        prevBtn.disabled = false;
-        setButtons();
-      });
+  const status = document.createElement("p");
+  status.style.marginTop = "15px";
+  root.appendChild(status);
 
-      root.appendChild(mailBtn);
-      stage.appendChild(root);
+  stage.appendChild(root);
 
-      // verrouillage : l'utilisateur doit cliquer sur le bouton mailto pour débloquer "Suite"
-      allowNext = false;
-      prevBtn.disabled = true;
-      setButtons();
+  allowNext = false;
+  setButtons();
+  setProgress();
 
-      setProgress();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+  button.onclick = async () => {
+    const nom = input.value.trim();
+
+    if (!nom) {
+      status.textContent = "Veuillez indiquer votre nom.";
+      return;
     }
+
+    status.textContent = "Envoi en cours...";
+    button.disabled = true;
+
+    try {
+      await sendConfirmationToSheet(nom);
+
+      status.textContent = "Confirmation enregistrée.";
+      finalMailSent = true;
+      allowNext = true;
+      setButtons();
+    } catch (err) {
+      console.error(err);
+      status.textContent =
+        "Erreur lors de l'enregistrement. Veuillez réessayer.";
+      button.disabled = false;
+    }
+  };
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+
 
     function render() {
       const page = PAGES[idx];
@@ -1349,5 +1405,4 @@ if (idx === 0) {
     render();
   </script>
 </body>
-
 </html>
